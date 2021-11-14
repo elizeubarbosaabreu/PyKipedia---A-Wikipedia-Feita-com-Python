@@ -1,4 +1,4 @@
-import wikipedia
+import wikipedia, time
 import PySimpleGUI as sg
 # 
 #      ____        _  ___                _ _       
@@ -34,8 +34,17 @@ while True:
         
     if event == sg.WINDOW_CLOSED:
         break
-    if event == 'Pesquisar':        
-        window['-conteudo-'].update(wikipedia.summary(values['-pesquisa-']))
-        window['-pesquisa-'].update('') 
+    if event == 'Pesquisar':
+        try:
+            window['-conteudo-'].update(wikipedia.summary(values['-pesquisa-']))
+            time.sleep(5)
+            window['-pesquisa-'].update('')
+        except wikipedia.exceptions.WikipediaException as e:
+            texto = f'''Ocorreu o seguinte erro durante a pesquisa: [{e}].
+Tente usar outras palavras na pesquisa ou verifique sua conexão com a internet...
+'''
+            window['-conteudo-'].update(texto)
+            time.sleep(5)
+            window['-pesquisa-'].update('')
 
 window.close()
